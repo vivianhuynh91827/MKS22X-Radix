@@ -1,4 +1,4 @@
-public class MyLinkedList {
+public class MyLinkedList<E>{
   private int size;
   private Node start, end;
 
@@ -19,7 +19,7 @@ public class MyLinkedList {
   @param value is value that will be added
   @return a boolean for whether or not addition was successful
   */
-  public boolean add(Integer value){
+  public boolean add(E value){
     Node newVal;
     if (size==0) {
       newVal = new Node(value, null, null); //Lone Node, no next or prec
@@ -42,7 +42,7 @@ public class MyLinkedList {
   @param index is the location of the new value
   @param value is the value that will be words
   */
-  public void add(int index, Integer value) {
+  public void add(int index, E value) {
     if ((size==0 && index != 0)||((index > size || index < 0)&&size>0) ) {
       throw new IndexOutOfBoundsException("Index "+index+" is out of bounds");
     }
@@ -114,7 +114,7 @@ public class MyLinkedList {
   @param index is the location of the wanted value
   @return an Integer of the value at the specified index
   */
-  public Integer get(int index) {
+  public E get(int index) {
     if (index >= size || index < 0) {
       throw new IndexOutOfBoundsException("Index "+index+" is out of bounds");
     }
@@ -125,12 +125,12 @@ public class MyLinkedList {
   @param index is the location of the new value
   @return an Integer of the original value before the change
   */
-  public Integer set(int index, Integer value) {
+  public E set(int index, E value) {
     if (index >= size || index < 0) {
       throw new IndexOutOfBoundsException("Index "+index+" is out of bounds");
     }
     Node changing = getNode(index); //gets node that will be replaced
-    Integer original = changing.getData(); //stores original data that will be replaced
+    E original = changing.getData(); //stores original data that will be replaced
     changing.setData(value); //changes the data
     return original;
   }
@@ -147,11 +147,11 @@ public class MyLinkedList {
   @param value is the wanted value
   @return a boolean depending on if the value is in the list
   */
-  public boolean contains(Integer value) {
+  public boolean contains(E value) {
     boolean contains = false; //has the value been found yet
     Node current = start;
     for (int i = 0; i < size; i ++) { //loops through linked list
-      if (current.getData()==(int)value) {
+      if (current.getData()==value) {
         contains=true; //if the value of the current node is equal to the wanted value, make boolean contains true;
       }
       current = current.getNext(); //updates current node
@@ -163,10 +163,10 @@ public class MyLinkedList {
   @param value is the wanted value
   @return an int of the index of the wanted value
   */
-  public int indexOf(Integer value) {
+  public int indexOf(E value) {
     Node current = start;
     for (int curInd = 0; curInd < size; curInd ++) { //loops through linked list
-      if (current.getData()==(int)value) {
+      if (current.getData()==value) {
         return curInd; //if the value of current node is equal to wanted value, return the index at which it wqas found
       }
       current = current.getNext();
@@ -178,7 +178,7 @@ public class MyLinkedList {
   @param index is the location of the wanted value
   @return an Integer of the value removed
   */
-  public Integer remove(int index) {
+  public E remove(int index) {
     if ((size==0 && index != 0)||((index >= size || index < 0)&&size>0) ) {
       throw new IndexOutOfBoundsException("Index "+index+" is out of bounds");
     }
@@ -210,8 +210,8 @@ public class MyLinkedList {
   @param value is the value wanted to be removed
   @return a boolean depending on whether or not the value was removed
   */
-  public boolean remove(Integer value) {
-    if (contains((int)value)) { //if the list contains the wanted value
+  public boolean remove(E value) {
+    if (contains(value)) { //if the list contains the wanted value
       int index = indexOf(value); // get the index of the wanted value
       remove(index);
       return true;
@@ -236,17 +236,30 @@ public class MyLinkedList {
     }
   }
 
+  public void clear() {
+    size = 0;
+    start = null;
+    end = null;
+  }
+
+  public E removeFront() {
+    Node temp = getNode(0);
+    Node newStart = getNode(1);
+    start = newStart;
+    return temp.getData();
+  }
+
   private class Node {
-    private Integer data;
+    private E data;
     private Node next, prev;
 
-    public Node(Integer value, Node newNext, Node newPrev) {
+    public Node(E value, Node newNext, Node newPrev) {
       data = value;
       next = newNext;
       prev = newPrev;
     }
 
-    public Integer getData() {
+    public E getData() {
       return data;
     }
 
@@ -258,7 +271,7 @@ public class MyLinkedList {
       return prev;
     }
 
-    public void setData(Integer newData) {
+    public void setData(E newData) {
       data = newData;
     }
 
@@ -273,5 +286,22 @@ public class MyLinkedList {
     public String toString() {
       return ""+data;
     }
+  }
+
+  public static void main(String[] args) {
+    MyLinkedList<Integer> test = new MyLinkedList<>();
+    test.add(0);
+    test.add(1);
+    test.add(2);
+    System.out.println(test);
+    MyLinkedList<Integer> test2 = new MyLinkedList<>();
+    test2.add(3);
+    test2.add(4);
+    test2.add(5);
+    test.extend(test2);
+    test.removeFront();
+    System.out.println(test);
+
+
   }
 }
