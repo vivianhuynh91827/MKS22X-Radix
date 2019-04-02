@@ -37,10 +37,18 @@ public class Radix {
   }
 
   private static int countDigits(int n) {
-    return 0;
+    int digits = 1;
+    while (n > Math.pow(10,digits)) {
+      digits ++;
+    }
+    return digits;
   }
+
   public static void main(String[] args) {
     int[] test = {10,5,-20,-34,75,345,23,0,30,7,2,1,88};
     radixsort(test);
+    System.out.println("15: " + countDigits(15));
+    System.out.println("1: " + countDigits(1));
+    System.out.println("155: " + countDigits(155));
   }
 }
